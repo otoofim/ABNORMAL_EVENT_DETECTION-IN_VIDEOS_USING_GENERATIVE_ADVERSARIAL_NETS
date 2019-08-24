@@ -20,14 +20,14 @@ def optical_flow(video_dir):
 		success,t2 = vidcap.read()
 		count += 1
 		if count%10 == 0:
-			cv2.imwrite(main_dir+"/opticalFlow/t2_{}.ppm".format(count), t2)     # save frame as JPEG file  
-			call('./optical/of {}/opticalFlow/t1_{} {}/opticalFlow/t2_{}'.format(main_dir, count-10, main_dir, count), shell=True)    
+			cv2.imwrite(main_dir+"/opticalFlow/t2_{}.ppm".format(count), t2)     # save frame as JPEG file
+			call('./optical/of {}/opticalFlow/t1_{} {}/opticalFlow/t2_{}'.format(main_dir, count-10, main_dir, count), shell=True)
 			os.remove("{}/opticalFlow/t1_{}.ppm".format(main_dir, count-10))
 			os.remove("{}/opticalFlow/t1_{}.flo".format(main_dir, count-10))
 			os.remove("{}/opticalFlow/t2_{}.ppm".format(main_dir, count))
 			cv2.imwrite("{}/opticalFlow/t1_{}.ppm".format(main_dir, count), t2)
 			print(count)
-	#os.remove("/home/mohammad/Desktop/test/frames/t1_{}.ppm".format(count - (count%10)))
+	os.remove("{}/opticalFlow/t1_{}.ppm".format(main_dir, count - (count%10)))
 
 
 
