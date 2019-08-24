@@ -4,8 +4,9 @@ import os
 import os.path
 import sys
 
-def optical_flow(video_dir):
+def optical_flow(video_dir, skip_frames):
 
+	skip_frames = int(skip_frames)
 	vidcap = cv2.VideoCapture(video_dir)
 	success,t1 = vidcap.read()
 
@@ -19,20 +20,20 @@ def optical_flow(video_dir):
 	while success:
 		success,t2 = vidcap.read()
 		count += 1
-		if count%10 == 0:
-			cv2.imwrite(main_dir+"/opticalFlow/t2_{}.ppm".format(count), t2)     # save frame as JPEG file
-			call('./optical/of {}/opticalFlow/t1_{} {}/opticalFlow/t2_{}'.format(main_dir, count-10, main_dir, count), shell=True)
-			os.remove("{}/opticalFlow/t1_{}.ppm".format(main_dir, count-10))
-			os.remove("{}/opticalFlow/t1_{}.flo".format(main_dir, count-10))
+		if count%skip_frames == 0:
+			cv2.imwrite(main_dir+"/opticalFlow/t2_{}.ppm".format(count), t2)
+			call('./optical/of {}/opticalFlow/t1_{} {}/opticalFlow/t2_{}'.format(main_dir, count-skip_frames, main_dir, count), shell=True)
+			os.remove("{}/opticalFlow/t1_{}.ppm".format(main_dir, count-skip_frames))
+			os.remove("{}/opticalFlow/t1_{}.flo".format(main_dir, count-skip_frames))
 			os.remove("{}/opticalFlow/t2_{}.ppm".format(main_dir, count))
 			cv2.imwrite("{}/opticalFlow/t1_{}.ppm".format(main_dir, count), t2)
 			print(count)
-	os.remove("{}/opticalFlow/t1_{}.ppm".format(main_dir, count - (count%10)))
+	os.remove("{}/opticalFlow/t1_{}.ppm".format(main_dir, count - (count%skip_frames)))
 
 
 
-def main(add):
-	optical_flow(add)
+def main(add, skip_frames):
+	optical_flow(add, skip_frames)
 
 if __name__ == "__main__":
-	main(sys.argv[1])
+	main(sys.argv[1], sys.argv[2])
