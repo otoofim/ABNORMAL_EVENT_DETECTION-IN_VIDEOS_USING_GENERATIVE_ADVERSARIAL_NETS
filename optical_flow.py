@@ -9,6 +9,8 @@ def optical_flow(video_dir, skip_frames):
 	skip_frames = int(skip_frames)
 	vidcap = cv2.VideoCapture(video_dir)
 	success,t1 = vidcap.read()
+	t1 = cv2.resize(t1, (256,256), interpolation = cv2.INTER_AREA)
+
 
 	main_dir = os.path.abspath(os.path.join(video_dir, '..'))
 
@@ -18,7 +20,9 @@ def optical_flow(video_dir, skip_frames):
 	count = 1
 
 	while success:
-		success,t2 = vidcap.read()
+		success, t2 = vidcap.read()
+		if success:
+			t2 = cv2.resize(t2, (256,256), interpolation = cv2.INTER_AREA)
 		count += 1
 		if count%skip_frames == 0:
 			cv2.imwrite(main_dir+"/opticalFlow/t2_{}.ppm".format(count), t2)
@@ -27,7 +31,7 @@ def optical_flow(video_dir, skip_frames):
 			os.remove("{}/opticalFlow/t1_{}.flo".format(main_dir, count-skip_frames))
 			os.remove("{}/opticalFlow/t2_{}.ppm".format(main_dir, count))
 			cv2.imwrite("{}/opticalFlow/t1_{}.ppm".format(main_dir, count), t2)
-			print(count)
+			#print(count)
 	os.remove("{}/opticalFlow/t1_{}.ppm".format(main_dir, count - (count%skip_frames)))
 
 
