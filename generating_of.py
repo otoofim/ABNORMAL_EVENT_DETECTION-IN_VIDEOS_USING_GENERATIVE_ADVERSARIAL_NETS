@@ -4,7 +4,7 @@ import importlib
 
 from optical_flow import *
 
-addstr = 'F:/UCF-Anomaly-Detection-Dataset/UCF_Crimes/Videos/'
+addstr = '/media/mohammad/2CE86D4BE86D13FC/UCF-Anomaly-Detection-Dataset/UCF_Crimes/Videos/'
 files = os.listdir(addstr)
 Database = []
 for FILE in files:

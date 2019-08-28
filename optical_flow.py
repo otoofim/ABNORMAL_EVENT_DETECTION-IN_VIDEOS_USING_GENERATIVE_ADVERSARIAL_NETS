@@ -20,18 +20,17 @@ def optical_flow(video_dir, skip_frames):
 	if not (os.path.exists(main_dir+'/frames')):
 		os.mkdir(main_dir+'/frames')
 
-
-	cv2.imwrite(main_dir+"/frames/t1_0.ppm", t1)
 	count = 0
+	cv2.imwrite(main_dir+"/frames/t1_{}.ppm".format(count), t1)
+
 
 	while success:
 		success, t2 = vidcap.read()
-		if success:
-			#t2 = cv2.resize(t2, (256,256), interpolation = cv2.INTER_AREA)
-			pass
 		count += 1
-		if (count%skip_frames == 0) and (not(os.path.exists("{}/opticalFlow/{}_{}_Flow.ppm".format(main_dir, video_name, count-skip_frames)))):
+		if (count%skip_frames == 0) and (not(os.path.exists("{}/opticalFlow/{}_{}_Flow.ppm".format(main_dir, video_name, count-skip_frames)))) and (success):
+			#t2 = cv2.resize(t2, (256,256), interpolation = cv2.INTER_AREA)
 			cv2.imwrite(main_dir+"/frames/t2_{}.ppm".format(count), t2)
+			print(main_dir+"/frames/t2_{}.ppm".format(count))
 			call('./optical/of {}/frames/t1_{} {}/frames/t2_{}'.format(main_dir, count-skip_frames, main_dir, count), shell=True)
 			os.rename("{}/frames/t1_{}.ppm".format(main_dir, count-skip_frames), "{}/frames/{}_{}.ppm".format(main_dir, video_name, count-skip_frames))
 			os.rename("{}/frames/t1_{}Flow.ppm".format(main_dir, count-skip_frames), "{}/opticalFlow/{}_{}_Flow.ppm".format(main_dir, video_name, count-skip_frames))
@@ -39,7 +38,11 @@ def optical_flow(video_dir, skip_frames):
 			os.rename("{}/frames/t2_{}.ppm".format(main_dir, count), "{}/frames/{}_{}.ppm".format(main_dir, video_name, count))
 			cv2.imwrite("{}/frames/t1_{}.ppm".format(main_dir, count), t2)
 			#print(count)
-	os.remove("{}/frames/t1_{}.ppm".format(main_dir, count - (count%skip_frames)))
+		elif (os.path.exists("{}/opticalFlow/{}_{}_Flow.ppm".format(main_dir, video_name, count-skip_frames))) and success:
+			os.remove("{}/frames/t1_{}.ppm".format(main_dir, count-skip_frames))
+			cv2.imwrite(main_dir+"/frames/t1_{}.ppm".format(count), t2)
+
+	os.remove("{}/frames/t1_{}.ppm".format(main_dir, count - (count%skip_frames) -1))
 
 
 
