@@ -6,8 +6,8 @@ As described in the paper, this method applies [Pixel2Pixel](https://phillipi.gi
 
 TO DO LIST:
 
-- [ ] Make optical flow for the dataset using the folder optical. The implementation is found [here](https://lmb.informatik.uni-freiburg.de/resources/binaries/)
+- [x] Make optical flow for the dataset using the folder optical. The implementation is found [here](https://lmb.informatik.uni-freiburg.de/resources/binaries/)
   - [x] Implement for one video
-  - [ ] Extend for whole dataset and compute optical flow for all videos
+  - [x] Extend for whole dataset and compute optical flow for all videos
 - [ ] Using the orginal implementation of Pixel2Pixel, two network is implemented, one to translate frames to optical flow and the other to translate optical flow to frames.
   - [ ] To resample the last Conv layer of AlexNet use this [link](https://stackoverflow.com/questions/13242382/resampling-a-numpy-array-representing-an-image)
