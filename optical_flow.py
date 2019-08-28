@@ -15,8 +15,10 @@ def optical_flow(video_dir, skip_frames):
 
 	main_dir = os.path.abspath(os.path.join(video_dir, '..'))
 
-	os.mkdir(main_dir+'/opticalFlow')
-	os.mkdir(main_dir+'/frames')
+	if not (os.path.exists(main_dir+'/opticalFlow')):
+		os.mkdir(main_dir+'/opticalFlow')
+	if not (os.path.exists(main_dir+'/frames')):
+		os.mkdir(main_dir+'/frames')
 
 
 	cv2.imwrite(main_dir+"/frames/t1_0.ppm", t1)
@@ -28,7 +30,7 @@ def optical_flow(video_dir, skip_frames):
 			#t2 = cv2.resize(t2, (256,256), interpolation = cv2.INTER_AREA)
 			pass
 		count += 1
-		if count%skip_frames == 0:
+		if (count%skip_frames == 0) and (not(os.path.exists("{}/opticalFlow/{}_{}_Flow.ppm".format(main_dir, video_name, count-skip_frames)))):
 			cv2.imwrite(main_dir+"/frames/t2_{}.ppm".format(count), t2)
 			call('./optical/of {}/frames/t1_{} {}/frames/t2_{}'.format(main_dir, count-skip_frames, main_dir, count), shell=True)
 			os.rename("{}/frames/t1_{}.ppm".format(main_dir, count-skip_frames), "{}/frames/{}_{}.ppm".format(main_dir, video_name, count-skip_frames))

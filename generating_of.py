@@ -4,7 +4,7 @@ import importlib
 
 from optical_flow import *
 
-addstr = '/media/mohammad/2CE86D4BE86D13FC/UCF-Anomaly-Detection-Dataset/UCF_Crimes/Videos/'
+addstr = 'F:/UCF-Anomaly-Detection-Dataset/UCF_Crimes/Videos/'
 files = os.listdir(addstr)
 Database = []
 for FILE in files:
@@ -12,6 +12,7 @@ for FILE in files:
         new_path = addstr + FILE
         files2 = os.listdir(new_path)
         for FILE2 in files2:
-            videopath = new_path + "/" + FILE2
-            optical_flow(videopath,1)
-            #print(videopath)
+            if not (FILE2 in ['frames', 'opticalFlow']):
+                videopath = new_path + "/" + FILE2
+                optical_flow(videopath,1)
+                #print(videopath)
