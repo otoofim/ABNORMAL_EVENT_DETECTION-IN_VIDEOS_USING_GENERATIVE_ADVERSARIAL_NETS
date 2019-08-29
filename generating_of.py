@@ -28,8 +28,8 @@ def generator(addstr):
 
 
 
-def main(add):
-   	optical_flow(add)
+def main(addstr):
+    generator(addstr)
 
 if __name__ == "__main__":
-   	main(sys.argv[1])
+    main(sys.argv[1])
