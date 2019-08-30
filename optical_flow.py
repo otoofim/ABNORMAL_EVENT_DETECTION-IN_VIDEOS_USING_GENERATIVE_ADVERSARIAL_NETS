@@ -17,7 +17,7 @@ def optical_flow(video_dir, dest_add, skip_frames=10):
 	main_dir = os.path.abspath(os.path.join(main_dir, '..'))
 	main_dir = main_dir + '/Normal_frame_optical'
 
-	print(main_dir)
+	print(video_name)
 
 	if not (os.path.exists(main_dir)):
 		os.mkdir(main_dir)
@@ -63,10 +63,12 @@ def optical_flow(video_dir, dest_add, skip_frames=10):
 		elif (os.path.exists("{}/{}_{}.jpg".format(main_dir, video_name, count-skip_frames))) and success:
 			os.remove("{}/t1.ppm".format(main_dir))
 			os.rename("{}/t2.ppm".format(main_dir), "{}/t1.ppm".format(main_dir))
+		#print(count)
 
-
-	os.remove("{}/t1.ppm".format(main_dir))
-	os.remove("{}/t2.ppm".format(main_dir))
+	if (os.path.exists("{}/t1.ppm".format(main_dir))):
+		os.remove("{}/t1.ppm".format(main_dir))
+	if (os.path.exists("{}/t2.ppm".format(main_dir))):
+		os.remove("{}/t2.ppm".format(main_dir))
 
 
 # def main(add, dest_add, skip_frames):
