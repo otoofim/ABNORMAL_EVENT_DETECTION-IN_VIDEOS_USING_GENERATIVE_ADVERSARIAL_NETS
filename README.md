@@ -14,6 +14,10 @@ TO DO LIST:
   - [ ] The output of optical flow to frame needs to be processed by last AlexNet ConvLeyer. Follow this [link](https://pytorch.org/docs/0.4.0/_modules/torchvision/models/alexnet.html). 
 - [ ] Error computing
   - [ ] Semantic error: Let `h(F)` be the conv5 representation befoe MaxPooling of `F` in AlexNet: p_F : ∆_S = h(F) − h(p_F)
-  - [ ] Optical error: a simple pixel-by-pixel difference, : ∆O = O − p_o
+  - [ ] Optical error: a simple pixel-by-pixel difference, : ∆_O = O − p_o
+  - [ ] we first upsample ∆_S in order to obtain ∆'_S with the same resolution as ∆_O.
+  - [ ] Normalizing optical test videos: the maximum value m_O of all the elements of ∆_O over all the input frames of V: N_O(i, j) = 1/m_O∆_O(i, j).
+  - [ ] Normalizing frame test videos: N_S(i, j) = 1/m_S∆'_S(i, j)
+
   
   
