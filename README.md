@@ -11,7 +11,7 @@ TO DO LIST:
   - [x] Extend for whole dataset and compute optical flow for all videos
 - [ ] Using the orginal implementation of Pixel2Pixel, two network is implemented, one to translate frames to optical flow and the other to translate optical flow to frames.
   - [ ] To resample the last Conv layer of AlexNet use this [link](https://stackoverflow.com/questions/13242382/resampling-a-numpy-array-representing-an-image)
-  - [ ] The output of optical flow to frame needs to be processed by last AlexNet ConvLeyer. Follow this [link](https://pytorch.org/docs/0.4.0/_modules/torchvision/models/alexnet.html). 
+  - [x] The output of optical flow to frame needs to be processed by last AlexNet ConvLeyer. Follow this [link](https://pytorch.org/docs/0.4.0/_modules/torchvision/models/alexnet.html). 
 - [ ] Error computing
   - [ ] Semantic error: Let `h(F)` be the conv5 representation befoe MaxPooling of `F` in AlexNet: p_F : ∆_S = h(F) − h(p_F)
   - [ ] Optical error: a simple pixel-by-pixel difference, : ∆_O = O − p_o
