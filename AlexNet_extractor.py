@@ -5,6 +5,8 @@ import torch
 from PIL import Image
 from torchvision import transforms
 from torchvision import models
+import scipy.ndimage
+
 
 
 __all__ = ['AlexNet', 'alexnet']
@@ -52,11 +54,13 @@ class AlexNet(nn.Module):
         x = self.classifier(x)
         return x
 
+
+
 class AlexNetConv5(nn.Module):
-	def __init__(self, original_model):
-	    super(AlexNetConv5, self).__init__()
-		# stop at conv5
-	    self.features = nn.Sequential(*list(original_model.features.children())[:-1])
+    def __init__(self, original_model):
+        super(AlexNetConv5, self).__init__()
+        # stop at conv5
+        self.features = nn.Sequential(*list(original_model.features.children())[:-1])
         self.preprocess = transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(224),
@@ -65,12 +69,12 @@ class AlexNetConv5(nn.Module):
         ])
 
 
-	def forward(self, x):
-	    if not(self.training):
-	        x = self.preprocess(x)
-	        x = x.unsqueeze(0) # create a mini-batch as expected by the model
-	    x = self.features(x)
-	    return x
+    def forward(self, x):
+        if not(self.training):
+            x = self.preprocess(x)
+            x = x.unsqueeze(0) # create a mini-batch as expected by the model
+        x = self.features(x)
+        return x
 
 
 
@@ -90,13 +94,29 @@ def alexnet(pretrained=False, **kwargs):
 
 
 
-def AlexNetConv5_getFeatures():
-	original_model = alexnet(True)
-	model = AlexNetConv5(original_model)
+def AlexNetConv5_getFeatures(img_add):
+    original_model = alexnet(True)
+    model = AlexNetConv5(original_model)
 
-	input_image = Image.open("./test.jpeg")
-	model.eval()
-	if torch.cuda.is_available():
-	    input_batch = input_batch.to('cuda')
-	    model.to('cuda')
-	model(input_image)
+    input_image = Image.open(img_add)
+    model.eval()
+    if torch.cuda.is_available():
+        input_batch = input_batch.to('cuda')
+        model.to('cuda')
+    return model(input_image)
+
+
+
+
+def computing_delta_prime_S(img1, img2):
+
+    output1 = AlexNetConv5_getFeatures(img1)
+    output2 = AlexNetConv5_getFeatures(img2)
+    sampler = nn.Upsample(size = (3,256,256))
+    dif = output1 - output2
+    dif = dif.unsqueeze(0)
+    sampled = sampler(dif).squeeze().squeeze()
+    output = sampled.reshape((256,256,3)).cpu().detach().numpy()
+    return output
+
+
