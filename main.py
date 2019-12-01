@@ -17,7 +17,9 @@ from PyQt5.QtWidgets import (QApplication, QFileDialog, QHBoxLayout, QLabel,
 from PyQt5.QtWidgets import QMainWindow,QWidget, QPushButton, QAction
 from PyQt5.QtGui import QIcon
 import sys
-from dialog import add_camera
+from dialog import Ui_add_camera
+from qtpy_video_player import VideoPlayer
+from choose_camera import Ui_choose_camera
 
 
 
@@ -36,41 +38,44 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
 
-        self.original_mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)## first video
-        self.original_mediaPlayer.setObjectName("original_frame")
+        #self.original_mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)## first video
+        #self.original_mediaPlayer.setObjectName("original_frame")
+        #self.videoWidget_orginal_frame = QVideoWidget()
+        #self.original_mediaPlayer.setVideoOutput(self.videoWidget_orginal_frame)
+        #self.verticalLayout.addWidget(self.videoWidget_orginal_frame)# end of first video
 
-        videoWidget_orginal_frame = QVideoWidget()
+        self.original_frame = VideoPlayer()
+        self.original_frame.setObjectName("original_frame")
+        self.original_frame.resize(445, 225)
+        self.verticalLayout.addWidget(self.original_frame)
 
-        self.original_mediaPlayer.setVideoOutput(videoWidget_orginal_frame)
 
-        self.verticalLayout.addWidget(videoWidget_orginal_frame)# end of first video
+        #self.prediction_frame = QMediaPlayer(None, QMediaPlayer.VideoSurface)## second video
+        #self.prediction_frame.setObjectName("prediction_frame")
+        #self.videoWidget_predicted_frame = QVideoWidget()
+        #self.prediction_frame.setVideoOutput(self.videoWidget_predicted_frame)
+        #self.verticalLayout.addWidget(self.videoWidget_predicted_frame)# end of second video
+
+        self.prediction_frmae = VideoPlayer()
+        self.prediction_frmae.setObjectName("prediction_frame")
+        self.prediction_frmae.resize(445, 225)
+        self.verticalLayout.addWidget(self.prediction_frmae)
 
 
-        self.prediction_frame = QMediaPlayer(None, QMediaPlayer.VideoSurface)## second video
-        self.prediction_frame.setObjectName("prediction_frame")
+        #self.horizontalLayout = QtWidgets.QHBoxLayout()
+        #self.horizontalLayout.setObjectName("horizontalLayout")
 
-        videoWidget_predicted_frame = QVideoWidget()
+        #self.detection = QtWidgets.QPushButton(self.centralwidget)
+        #self.detection.setObjectName("detection")
 
-        self.prediction_frame.setVideoOutput(videoWidget_predicted_frame)
+        #self.horizontalLayout.addWidget(self.detection)
 
-        self.verticalLayout.addWidget(videoWidget_predicted_frame)
+        #self.stop = QtWidgets.QPushButton(self.centralwidget)
+        #self.stop.setObjectName("stop")
 
-        self.verticalLayout.addWidget(videoWidget_predicted_frame)# end of second video
+        #self.horizontalLayout.addWidget(self.stop)
 
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-
-        self.detection = QtWidgets.QPushButton(self.centralwidget)
-        self.detection.setObjectName("detection")
-
-        self.horizontalLayout.addWidget(self.detection)
-
-        self.stop = QtWidgets.QPushButton(self.centralwidget)
-        self.stop.setObjectName("stop")
-
-        self.horizontalLayout.addWidget(self.stop)
-
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        #self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_2.addLayout(self.verticalLayout)
 
@@ -87,6 +92,8 @@ class Ui_MainWindow(object):
         self.choose_camera.setObjectName("choose_camera")
 
         self.verticalLayout_2.addWidget(self.choose_camera)
+        self.choose_camera.clicked.connect(self.choose_camera_window)
+
 
         self.exit = QtWidgets.QPushButton(self.centralwidget)
         self.exit.setObjectName("exit")
@@ -111,8 +118,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Intelligence survailance system"))
-        self.detection.setText(_translate("MainWindow", "Abnormal detection"))
-        self.stop.setText(_translate("MainWindow", "Stop"))
+        #self.detection.setText(_translate("MainWindow", "Abnormal detection"))
+        #self.stop.setText(_translate("MainWindow", "Stop"))
         self.add_camera.setText(_translate("MainWindow", "Add camera"))
         self.choose_camera.setText(_translate("MainWindow", "Choose \n"" camera"))
         self.exit.setText(_translate("MainWindow", "Exit"))
@@ -121,17 +128,16 @@ class Ui_MainWindow(object):
         sys.exit(app.exec_())
 
     def add_camera_window(self):
-        #self.w = add_camera()
-        #self.w.show()
-        #print("heeeelelle")
-        #self.MainWindow = QtWidgets.QMainWindow()
-        #self.ui = add_camera()
-        #self.ui.setupUi(self.MainWindow)
-        #self.MainWindow.show()
-        #self.MainWindow.close()
 
         self.Dialog = QtWidgets.QDialog()
-        self.ui = add_camera()
+        self.ui = Ui_add_camera()
+        self.ui.setupUi(self.Dialog)
+        self.Dialog.show()
+
+    def choose_camera_window(self):
+
+        self.Dialog = QtWidgets.QDialog()
+        self.ui = Ui_choose_camera()
         self.ui.setupUi(self.Dialog)
         self.Dialog.show()
 
@@ -144,10 +150,10 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
 
-    ui.original_mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile('/home/mohammad/Desktop/iraq.mp4')))
-    ui.original_mediaPlayer.play()
+    #ui.original_mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile('/home/mohammad/Desktop/iraq.mp4')))
+    #ui.original_mediaPlayer.play()
 
-    ui.prediction_frame.setMedia(QMediaContent(QUrl.fromLocalFile('/home/mohammad/Desktop/iraq.mp4')))
-    ui.prediction_frame.play()
+    #ui.prediction_frame.setMedia(QMediaContent(QUrl.fromLocalFile('/home/mohammad/Desktop/iraq.mp4')))
+    #ui.prediction_frame.play()
 
     sys.exit(app.exec_())
